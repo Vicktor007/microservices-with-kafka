@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="config-server" />
+        <module name="microservices-gateway" />
+        <module name="discovery-server" />
+      </profile>
+      <profile name="Annotation profile for customer-microservice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="customer-microservice" />
+        <module name="notification-microservice" />
+        <module name="products-microservice" />
+        <module name="order-microservice" />
+        <module name="payment-microservice" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="config-server" options="-parameters" />
+      <module name="customer-microservice" options="-parameters" />
+      <module name="discovery-server" options="-parameters" />
+      <module name="microservices-gateway" options="-parameters" />
+      <module name="notification-microservice" options="-parameters" />
+      <module name="order-microservice" options="-parameters" />
+      <module name="payment-microservice" options="-parameters" />
+      <module name="products-microservice" options="-parameters" />
+    </option>
+  </component>
+</project>
