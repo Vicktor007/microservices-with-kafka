@@ -1,84 +1,118 @@
+//
+//
+//package com.vic.ecommerce.service;
+//
+//import com.vic.ecommerce.DTO.CustomerDto;
+//import com.vic.ecommerce.exceptions.CustomerNotFoundException;
+//import com.vic.ecommerce.exceptions.OurException;
+//import com.vic.ecommerce.mappers.CustomerMapper;
+//import com.vic.ecommerce.model.Customer;
+//import com.vic.ecommerce.repository.CustomerRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//
+//@Service
+//public class CustomerService {
+//
+//    @Autowired
+//    CustomerRepository customerRepository;
+//
+//    public CustomerDto createCustomer(Customer customer) {
+//        if (customerRepository.existsByEmail(customer.getEmail())) {
+//            throw new OurException(customer.getEmail() + " already exists");
+//        }
+//        Customer savedCustomer = customerRepository.save(customer);
+//        return CustomerMapper.mapCustomerEntityToCustomerDTO(savedCustomer);
+//    }
+//
+//    public List<CustomerDto> findAllCustomers() {
+//        List<Customer> customerList = customerRepository.findAll();
+//        return CustomerMapper.mapCustomerListEntityToCustomerListDto(customerList);
+//    }
+//
+//    public Boolean existsById(String customerId) {
+//        return customerRepository.findById(customerId).isPresent();
+//    }
+//
+//    public Optional<CustomerDto> findById(String customerId) {
+//        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+//        if (customerOptional.isPresent()) {
+//            Customer customer = customerOptional.get();
+//            CustomerDto customerDto = CustomerMapper.mapCustomerEntityToCustomerDTO(customer);
+//            return Optional.of(customerDto);
+//        } else {
+//            return Optional.empty();
+//        }
+//    }
+//
+//    public void deleteCustomer(String customerId) {
+//        try {
+//            customerRepository.deleteById(customerId);
+//        } catch (Exception e) {
+//            throw new OurException("Unable to delete customer: " + e.getMessage());
+//        }
+//    }
+//}
+
 package com.vic.ecommerce.service;
 
-import com.vic.ecommerce.customer.Customer;
-import com.vic.ecommerce.exceptions.CustomerNotFoundException;
+import com.vic.ecommerce.DTO.CustomerDto;
+import com.vic.ecommerce.DTO.Response;
+import com.vic.ecommerce.exceptions.OurException;
 import com.vic.ecommerce.mappers.CustomerMapper;
-import com.vic.ecommerce.records.CustomerRequest;
-import com.vic.ecommerce.records.CustomerResponse;
+import com.vic.ecommerce.model.Customer;
 import com.vic.ecommerce.repository.CustomerRepository;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import com.vic.ecommerce.service.interfacee.customerInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class CustomerService {
+public class CustomerService implements customerInterface {
 
     @Autowired
-     CustomerRepository customerRepository;
+    CustomerRepository customerRepository;
 
-    @Autowired
-     CustomerMapper customerMapper;
-
-    public String createCustomer(@Valid CustomerRequest request) {
-        var customer = customerRepository.save(customerMapper.toCustomer(request));
-        return customer.getId();
-    }
-
-    public void updateCustomer(@Valid CustomerRequest request) {
-        var customer = customerRepository.findById(request.id())
-                .orElseThrow(() -> new CustomerNotFoundException(
-                        String.format("Cannot update customer::No customer found with the provided ID::%s", request.id())
-                ));
-
-        mergeCustomer(customer, request);
-        customerRepository.save(customer);
-    }
-
-    private void mergeCustomer(Customer customer, @Valid CustomerRequest request) {
-        if (StringUtils.isNotBlank(request.firstname())){
-            customer.setFirstname(request.firstname());
+    @Override
+    public Response createCustomer(Customer customer) {
+        Response response = new Response();
+        try {
+            if (customerRepository.existsByEmail(customer.getEmail())) {
+                throw new OurException(customer.getEmail() + " already exists");
+            }
+            Customer savedCustomer = customerRepository.save(customer);
+            CustomerDto customerDto = CustomerMapper.mapCustomerEntityToCustomerDTO(savedCustomer);
+            response.setCustomer(customerDto);
+        } catch (DataIntegrityViolationException e) {
+            throw new OurException("Data integrity violation: " + e.getMessage());
+        } catch (Exception e) {
+            throw new OurException("Error creating customer: " + e.getMessage());
         }
-        if (StringUtils.isNotBlank(request.lastname())){
-            customer.setFirstname(request.lastname());
-        }
-        if (StringUtils.isNotBlank(request.email())){
-            customer.setFirstname(request.email());
-        }
-        if (request.firstname() != null){
-            customer.setAddress(request.address());
-        }
+        return response;
     }
 
-    public List<CustomerResponse> findAllCustomers() {
-        return customerRepository.findAll()
-                .stream()
-                .map(customerMapper::fromCustomer)
-                .collect(Collectors.toList());
-
-
+    @Override
+    public Response findById(String customerId) {
+        return null;
     }
 
-    public Boolean existsById(String customerId) {
-       return customerRepository.findById(customerId)
-                .isPresent();
+    @Override
+    public Response existsById(String customerId) {
+        return null;
     }
 
-    public CustomerResponse findById(String customerId) {
-        return customerRepository.findById(customerId)
-                .map(customerMapper::fromCustomer)
-                .orElseThrow(()-> new CustomerNotFoundException(
-                        String.format("No customer found with the provided ID: %s", customerId)
-                ));
-
+    @Override
+    public Response findAllCustomers() {
+        return null;
     }
 
-    public void deleteCustomer(String customerId) {
-        customerRepository.deleteById(customerId);
+    @Override
+    public Response deleteCustomer(String customerId) {
+        return null;
     }
 }

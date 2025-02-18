@@ -1,8 +1,8 @@
 package com.vic.ecommerce.controller;
 
-import com.vic.ecommerce.records.CustomerRequest;
-import com.vic.ecommerce.records.CustomerRequest;
-import com.vic.ecommerce.records.CustomerResponse;
+import com.vic.ecommerce.DTO.CustomerDto;
+import com.vic.ecommerce.DTO.Response;
+import com.vic.ecommerce.model.Customer;
 import com.vic.ecommerce.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -21,36 +22,35 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<String> createCustomer(
-            @RequestBody @Valid com.vic.ecommerce.records.CustomerRequest request
+    public ResponseEntity<Response> createCustomer(
+            @RequestBody @Valid Customer customer
     ){
-        return ResponseEntity.ok(customerService.createCustomer(request));
+        Response response = customerService.createCustomer(customer);
+        return ResponseEntity.status(200).body(response);
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateCustomer(@RequestBody @Valid CustomerRequest request){
-        customerService.updateCustomer(request);
-        return ResponseEntity.accepted().build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<CustomerResponse>> findAll(){
-        return ResponseEntity.ok(customerService.findAllCustomers());
-    }
-
-    @GetMapping("/exists/{customer-id}")
-    public ResponseEntity<Boolean> existsById(
-            @PathVariable("customer-id") String customerId
-    ){
-        return ResponseEntity.ok(customerService.existsById(customerId));
-    }
-
-    @GetMapping("/find-customer-by-id/{customer-id}")
-    public ResponseEntity<CustomerResponse> findById(
-            @PathVariable("customer-id") String customerId
-    ){
-        return ResponseEntity.ok(customerService.findById(customerId));
-    }
+//    @GetMapping
+//    public ResponseEntity<List<CustomerDto>> findAll(){
+//        List<CustomerDto> customers = customerService.findAllCustomers();
+//        return ResponseEntity.ok(customers);
+//    }
+//
+//    @GetMapping("/exists/{customer-id}")
+//    public ResponseEntity<Boolean> existsById(
+//            @PathVariable("customer-id") String customerId
+//    ){
+//        Boolean exists = customerService.existsById(customerId);
+//        return ResponseEntity.ok(exists);
+//    }
+//
+//    @GetMapping("/find-customer-by-id/{customer-id}")
+//    public ResponseEntity<CustomerDto> findById(
+//            @PathVariable("customer-id") String customerId
+//    ){
+//        Optional<CustomerDto> customerDto = customerService.findById(customerId);
+//        return customerDto.map(ResponseEntity::ok)
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 
     @DeleteMapping("/{customer-id}")
     public ResponseEntity<Void> deleteCustomer(
