@@ -10,9 +10,8 @@
 2. ⚙️ [Tech Stack](#tech-stack)
 3. 🔋 [Features](#features)
 4. 🤸 [Quick Start](#quick-start)
-5. 🕸️ [Snippets (Code to Copy)](#snippets)
-6. 🔗 [Assets](#links)
-7. 🚀 [More](#more)
+
+
 
 
 
@@ -20,7 +19,7 @@
 
 ## <a name="introduction">🤖 Introduction</a>
 
-A **springboot microservices API** that handles **users, products, and order logic**.
+A **springboot microservices API** that handles **users, products, order logic and notifications using kafka**.
 
 Authenticates users using keycloak, connects different databases both sql and noSql, creates models and schemas, integrating  them with the necessary ORMs and Structuring the architecture  of the APIs to ensure scalability and seamless communication with each other.
 
@@ -40,7 +39,7 @@ Authenticates users using keycloak, connects different databases both sql and no
 
 ## <a name="features">🔋 Features</a>
 
-👉 **Advanced Rate Limiting and Bot Protection**: with Arcjet that helps you secure the whole app.
+👉 **Rate Limiting**: with resilience4j that helps you secure the whole app.
 
 👉 **Database Modeling**: Models and relationships using MongoDB mySql and PosgreSql.
 
