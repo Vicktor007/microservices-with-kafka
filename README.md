@@ -39,7 +39,7 @@ Authenticates users using keycloak, connects different databases both sql and no
 
 ## <a name="features">🔋 Features</a>
 
-👉 **Rate Limiting**: with resilience4j that helps you secure the whole app.
+👉 **Rate Limiting**: with resilience4j that helps you secure the whole app from overloading the apis.
 
 👉 **Database Modeling**: Models and relationships using MongoDB mySql and PosgreSql.
 
