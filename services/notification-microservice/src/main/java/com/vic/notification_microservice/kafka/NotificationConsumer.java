@@ -32,8 +32,8 @@ public class NotificationConsumer {
     public void consumePaymentSuccessNotifications(PaymentConfirmation paymentConfirmation) throws MessagingException {
         log.info("Consuming the message from payment-topic Topic:: {}", paymentConfirmation);
         notificationRepository.save(
-                 new Notification.Builder()
-                        .type(ORDER_CONFIRMATION)
+                 Notification.builder()
+                        .type(PAYMENT_CONFIRMATION)
                         .notificationDate(LocalDateTime.now())
                         .paymentConfirmation(paymentConfirmation)
                         .build()
@@ -51,8 +51,8 @@ public class NotificationConsumer {
     public void consumeOrderConfirmationNotifications(OrderConfirmation orderConfirmation) throws MessagingException {
         log.info("Consuming the message from order-topic Topic:: {}", orderConfirmation);
         notificationRepository.save(
-                new Notification.Builder()
-                        .type(PAYMENT_CONFIRMATION)
+                 Notification.builder()
+                        .type(ORDER_CONFIRMATION)
                         .notificationDate(LocalDateTime.now())
                         .orderConfirmation(orderConfirmation)
                         .build()
